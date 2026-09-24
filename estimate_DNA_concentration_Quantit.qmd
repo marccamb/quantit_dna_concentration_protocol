@@ -135,15 +135,17 @@ for (i in 1:length(fluo_files)) {
       sep = ",",
       col.names = c('well', 'fluo_intensity')
     )
-  ## Removing spaces in well names  
+
+  ## Removing spaces in well names
   tmp$well <- gsub(" ", "", tmp$well)
+
   ## Turning fluorescence data to numeric
   tmp$fluo_intensity <- as.numeric(tmp$fluo_intensity)
+  tmp$column <- gsub("[A-H]", "", tmp$well)
+  tmp$row <- gsub("[0-9]", "", tmp$well)
 
   # Separating standard and real samples
-  if (grep('standard', f) == 1) {
-    tmp$column <- gsub("[A-H]", "", tmp$well)
-    tmp$row <- gsub("[0-9]", "", tmp$well)
+  if (grepl('standard', f)) {
     # make a subset table with standard only
     st <-
       subset(tmp, tmp$column %in% standard_col & row %in% names(standard_row))
@@ -154,7 +156,6 @@ for (i in 1:length(fluo_files)) {
         tmp,
         !tmp$column %in% standard_col & tmp$row %in% names(standard_row)
       )
-
     # Make a linear model to calculate standard curve slope and intercept
     mod <- lm(fluo_intensity ~ concentration, data = st)
   }
