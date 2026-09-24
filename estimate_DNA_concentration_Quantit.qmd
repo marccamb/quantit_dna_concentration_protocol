@@ -70,9 +70,9 @@ This document is a template for analyzing quantification data of dsDNA in 96-wel
 1. Make sure that:
 
   - All your data files are in the `data` directory
-    - Create one folder per date of measurement, so that the plate with standards and those measured at the same time are in the same plate.
-  - Each file contain in its name `plate1` with the number of the plate and no space
-  - The plates containing standard samples contain `standard` in the the fluorescence file name in addition to the plate number.
+    - Create one folder per date of measurement, so that the plate with standards and those measured at the same time are in the same folder.
+  - Each file contains in its name `plate1` with the number of the plate and no space
+  - The plates containing standards contain `standard` in the the fluorescence file name in addition to the plate number.
   - Example:
     - `231204_standard_plate1.csv` for a plate containing both standards and samples
     - `231204_plate2.csv` for a plate that contains only samples

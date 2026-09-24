@@ -24,3 +24,7 @@ Simply open the `estimate_DNA_concentration_Quantit.qmd` file and follow the ins
 ## Example
 
 The repository contains an example dataset. You can open `estimate_DNA_concentration_Quantit.qmd` and render it to produce an HTML output with the example data. 
+
+## Note on working directory
+
+Since we are using relative paths, don't forget to check your working directory! If you use RStudio instead of Positron, it might be worth creating an Rproject to avoid having to think about it. 
