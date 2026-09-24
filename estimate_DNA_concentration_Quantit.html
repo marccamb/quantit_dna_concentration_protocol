@@ -2606,8 +2606,10 @@ border: 0;
   <li><a href="#material" id="toc-material" class="nav-link" data-scroll-target="#material">Material</a></li>
   <li><a href="#plate-preparation" id="toc-plate-preparation" class="nav-link" data-scroll-target="#plate-preparation">Plate preparation</a></li>
   <li><a href="#data-preparation" id="toc-data-preparation" class="nav-link" data-scroll-target="#data-preparation">Data preparation</a></li>
+  <li><a href="#reading-files" id="toc-reading-files" class="nav-link" data-scroll-target="#reading-files">Reading files</a></li>
   <li><a href="#standard-curves" id="toc-standard-curves" class="nav-link" data-scroll-target="#standard-curves">Standard curves</a></li>
   <li><a href="#sample-quantification" id="toc-sample-quantification" class="nav-link" data-scroll-target="#sample-quantification">Sample quantification</a></li>
+  <li><a href="#plot-concentration" id="toc-plot-concentration" class="nav-link" data-scroll-target="#plot-concentration">Plot concentration</a></li>
   <li><a href="#session-info" id="toc-session-info" class="nav-link" data-scroll-target="#session-info">Session info</a></li>
   </ul>
 </nav>
@@ -2657,13 +2659,14 @@ border: 0;
 </div>
 <section id="objective" class="level2">
 <h2 class="anchored" data-anchor-id="objective">Objective</h2>
-<p>Quantification of dsDNA in 96-well plate using the <a href="https://www.thermofisher.com/order/catalog/product/Q33120">Quant-it (ThermoFisher)</a>.</p>
+<p>This document is a template for analyzing quantification data of dsDNA in 96-well plate using the <a href="https://www.thermofisher.com/order/catalog/product/Q33120">Quant-it (ThermoFisher)</a>.</p>
 </section>
 <section id="material" class="level2">
 <h2 class="anchored" data-anchor-id="material">Material</h2>
 <ul>
 <li><p>Microplates for Fluorescence-based Assays, for instance <a href="https://www.thermofisher.com/order/catalog/product/M33089">these ones</a>.</p></li>
-<li><p>Plate reader</p></li>
+<li><p>Omega FLUOstar Omega (BMC Biotech) plate reader</p></li>
+<li><p>Quant-it dsDNA High Sensitivity kit (ThermoFisher) either 1X solution or reagent + buffer</p></li>
 </ul>
 </section>
 <section id="plate-preparation" class="level2 page-columns page-full">
@@ -2675,7 +2678,7 @@ border: 0;
 <li>Load 200 μL of the working solution into each microplate well using a black flat bottom 96-well plates.</li>
 <li>Add 10 μL of each λ DNA standard to separate wells and mix well. Duplicates or triplicates of the standards are recommended.</li>
 <li>Add 1-2 μL of each unknown DNA sample to separate wells and mix well. The fluorescence signal is stable for 3 hours at room temperature.</li>
-<li>Measure the fluorescence using the Omega FLUOstar Omega (BMC Biotech) plate reader from Christine’s group (side room, ask Barbara). See below for protocol parameters.</li>
+<li>Measure the fluorescence using the Omega FLUOstar Omega (BMC Biotech) plate reader. See below for protocol parameters.</li>
 </ol>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2691,7 +2694,7 @@ Important
 </div>
 </div>
 <ul>
-<li>Load the data export file <strong>XXXX</strong> or set up the data export format as in <a href="#fig-dataformat" class="quarto-xref">Figure 1</a>.</li>
+<li>Set up the data export format as in <a href="#fig-dataformat" class="quarto-xref">Figure 1</a>. You can save the data export format and import it from a file later.</li>
 </ul>
 <div id="fig-dataformat" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -2704,7 +2707,7 @@ Figure 1: Data format for automatic ASCII export
 </figure>
 </div>
 <ul>
-<li>You should be able to find the protocol <strong>Quant-it DNA concentration</strong> in the protocol manager, which should look like <a href="#fig-protocol" class="quarto-xref">Figure 2</a>. Check the layout tab and make sure all wells are selected for reading.</li>
+<li>Go to the protocol manager and look for <strong>Quant-it DNA concentration</strong> (or create it if not existing), which should look like <a href="#fig-protocol" class="quarto-xref">Figure 2</a>. Check the layout tab and make sure all wells are selected for reading.</li>
 </ul>
 <div id="fig-protocol" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -2735,7 +2738,9 @@ Figure 3: Saving raw data from the Omega software
 </section>
 <section id="data-preparation" class="level2">
 <h2 class="anchored" data-anchor-id="data-preparation">Data preparation</h2>
-<p>Make sure that:</p>
+<ol type="1">
+<li>Make sure that:</li>
+</ol>
 <ul>
 <li>All your data files are in the <code>data</code> directory
 <ul>
@@ -2745,11 +2750,30 @@ Figure 3: Saving raw data from the Omega software
 <li>The plates containing standard samples contain <code>standard</code> in the the fluorescence file name in addition to the plate number.</li>
 <li>Example:
 <ul>
-<li>`231204_standard_plate1.csv` for a plate containing both standards and samples</li>
-<li>`231204_plate2.csv` for a plate that contains only samples</li>
+<li><code>231204_standard_plate1.csv</code> for a plate containing both standards and samples</li>
+<li><code>231204_plate2.csv</code> for a plate that contains only samples</li>
 </ul></li>
 </ul>
-<p>Add in the code chunk below the column numbers of the standards, and the concentration (ng/µL) of each standard for each row. Also</p>
+<ol start="2" type="1">
+<li>Add in the code chunk below the column numbers of the standards.</li>
+</ol>
+<ul>
+<li>Example: In the example data, standards were in column 1 (A1 to H1), 2 (A2 to H2) and 3 (A3 to H3). So we set <code>standard_col &lt;- c(1, 2, 3)</code>.</li>
+</ul>
+<ol start="3" type="1">
+<li>Add to the code chunk the concentration (ng/µL) of each standard for each row (A to H) in the code below. The Quant-it standard concentrations typically are 0, 0.5, 1, 2, 4, 6, 8, 10 ng/µL.</li>
+<li>Add the volume of sample in µL you used in the reaction (typically 1 sµL), as well as the volume of standard (typically 10 µL)</li>
+<li>Add the relative path for the folder containing the result files for plates done on the same day including standard curves.</li>
+</ol>
+<ul>
+<li>Example: for the example dataset <code>file_path &lt;- &quot;data/20231204&quot;</code></li>
+</ul>
+<ol start="6" type="1">
+<li>Add the base of the result file name.</li>
+</ol>
+<ul>
+<li>Example: here I simply put the experiment date <code>file_base_name &lt;- &quot;231204&quot;</code>. The output file will be named “results/231204_Quantit_results.csv”</li>
+</ul>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
@@ -2770,68 +2794,88 @@ Figure 3: Saving raw data from the Omega software
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Volume of sample in µL</span></span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>vol_samples <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># make a list of all the quantification files from a given date (containing &#39;plate&#39; in the name)</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>fluo_files <span class="ot">&lt;-</span></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list.files</span>(<span class="at">path =</span> <span class="st">&quot;data/20231204&quot;</span>,</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>             <span class="at">pattern =</span> <span class="st">&quot;plate&quot;</span>,</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>             <span class="at">full.names =</span> T)</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(fluo_files)) {</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> fluo_files[i]</span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="co"># reading the plate file</span></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.table</span>(</span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>      f,</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">h =</span> F,</span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>      <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>,</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;well&#39;</span>, <span class="st">&#39;fluo_intensity&#39;</span>)</span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>well <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;&quot;</span>, tmp<span class="sc">$</span>well)</span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>fluo_intensity <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(tmp<span class="sc">$</span>fluo_intensity)</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Separating standard and real samples</span></span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grep</span>(<span class="st">&#39;standard&#39;</span>, f) <span class="sc">==</span> <span class="dv">1</span>) {</span>
-<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>    tmp<span class="sc">$</span>column <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;[A-H]&quot;</span>, <span class="st">&quot;&quot;</span>, tmp<span class="sc">$</span>well)</span>
-<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    tmp<span class="sc">$</span>row <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;[0-9]&quot;</span>, <span class="st">&quot;&quot;</span>, tmp<span class="sc">$</span>well)</span>
-<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make a subset table with standard only</span></span>
-<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    st <span class="ot">&lt;-</span></span>
-<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>      <span class="fu">subset</span>(tmp,</span>
-<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>             tmp<span class="sc">$</span>column <span class="sc">%in%</span> standard_col <span class="sc">&amp;</span> row <span class="sc">%in%</span> <span class="fu">names</span>(standard_row))</span>
-<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    st<span class="sc">$</span>concentration <span class="ot">&lt;-</span> standard_row[st<span class="sc">$</span>row]</span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># remove the standard from the table</span></span>
-<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    tmp <span class="ot">&lt;-</span></span>
-<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>      <span class="fu">subset</span>(tmp,</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>             <span class="sc">!</span>tmp<span class="sc">$</span>column <span class="sc">%in%</span> standard_col <span class="sc">&amp;</span> tmp<span class="sc">$</span>row <span class="sc">%in%</span> <span class="fu">names</span>(standard_row))</span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Make a linear model to calculate standard curve slope and intercept</span></span>
-<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>    mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(fluo_intensity <span class="sc">~</span> concentration, <span class="at">data =</span> st)</span>
-<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>plate <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;.*(plate[0-9]+).*&quot;</span>, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, f)</span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>dilution <span class="ot">&lt;-</span> <span class="dv">10</span> <span class="sc">/</span> vol_samples</span>
-<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">rbind</span>(res, tmp)</span>
-<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span>(tmp)</span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Volume of standards in µL</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>vol_standards <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># make a list of all the quantification files from a given date (containing &#39;plate&#39; in the name)</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>file_path <span class="ot">&lt;-</span> <span class="st">&quot;data/20231204&quot;</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>fluo_files <span class="ot">&lt;-</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list.files</span>(<span class="at">path =</span> file_path, <span class="at">pattern =</span> <span class="st">&quot;plate&quot;</span>, <span class="at">full.names =</span> T)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Output file base name</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>file_base_name <span class="ot">&lt;-</span> <span class="st">&quot;231204&quot;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<ol start="6" type="1">
+<li>You should be all set to render the Quarto document!</li>
+</ol>
+</section>
+<section id="reading-files" class="level2">
+<h2 class="anchored" data-anchor-id="reading-files">Reading files</h2>
+<p>The code chunk below will load all the data files and compute de standard curve.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Show the code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now we are reading all the plate files and computing the linear regression for the standard curve</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(fluo_files)) {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  f <span class="ot">&lt;-</span> fluo_files[i]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> <span class="co"># reading the plate file</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">read.table</span>(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>      f,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">h =</span> F,</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">col.names =</span> <span class="fu">c</span>(<span class="st">&#39;well&#39;</span>, <span class="st">&#39;fluo_intensity&#39;</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Removing spaces in well names  </span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>well <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;&quot;</span>, tmp<span class="sc">$</span>well)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Turning fluorescence data to numeric</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>fluo_intensity <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(tmp<span class="sc">$</span>fluo_intensity)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Separating standard and real samples</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">grep</span>(<span class="st">&#39;standard&#39;</span>, f) <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    tmp<span class="sc">$</span>column <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;[A-H]&quot;</span>, <span class="st">&quot;&quot;</span>, tmp<span class="sc">$</span>well)</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    tmp<span class="sc">$</span>row <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;[0-9]&quot;</span>, <span class="st">&quot;&quot;</span>, tmp<span class="sc">$</span>well)</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># make a subset table with standard only</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    st <span class="ot">&lt;-</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">subset</span>(tmp, tmp<span class="sc">$</span>column <span class="sc">%in%</span> standard_col <span class="sc">&amp;</span> row <span class="sc">%in%</span> <span class="fu">names</span>(standard_row))</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    st<span class="sc">$</span>concentration <span class="ot">&lt;-</span> standard_row[st<span class="sc">$</span>row]</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># remove the standard from the table</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    tmp <span class="ot">&lt;-</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>      <span class="fu">subset</span>(</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>        tmp,</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>        <span class="sc">!</span>tmp<span class="sc">$</span>column <span class="sc">%in%</span> standard_col <span class="sc">&amp;</span> tmp<span class="sc">$</span>row <span class="sc">%in%</span> <span class="fu">names</span>(standard_row)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Make a linear model to calculate standard curve slope and intercept</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    mod <span class="ot">&lt;-</span> <span class="fu">lm</span>(fluo_intensity <span class="sc">~</span> concentration, <span class="at">data =</span> st)</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>plate <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;.*(plate[0-9]+).*&quot;</span>, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">1&quot;</span>, f)</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>dilution <span class="ot">&lt;-</span> vol_standards <span class="sc">/</span> vol_samples</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">rbind</span>(res, tmp)</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rm</span>(tmp)</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 <section id="standard-curves" class="level2">
 <h2 class="anchored" data-anchor-id="standard-curves">Standard curves</h2>
+<p>Plotting the standard curve and the regression line to check everying looks good:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(graph_par)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">4</span>,<span class="dv">1</span>), <span class="at">las=</span><span class="dv">1</span>, <span class="at">xpd=</span>F)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fluo_intensity<span class="sc">~</span>concentration, </span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">data=</span>st,</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Concenration (ng/µL)&quot;</span>,</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">&quot;&quot;</span>,</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">&quot;Standard curve&quot;</span>,</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">21</span>, <span class="at">col=</span><span class="st">&quot;steelblue&quot;</span>, <span class="at">bg=</span><span class="st">&quot;steelblue&quot;</span>)</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span>mod<span class="sc">$</span>coefficients[<span class="dv">1</span>],<span class="at">b=</span>mod<span class="sc">$</span>coefficients[<span class="dv">2</span>],<span class="at">col=</span><span class="st">&quot;gray&quot;</span>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">8</span>,<span class="dv">10000</span>, <span class="fu">paste</span>(<span class="st">&quot;R2 =&quot;</span>, <span class="fu">round</span>(<span class="fu">summary</span>(mod)<span class="sc">$</span>r.squared, <span class="at">digits =</span> <span class="dv">3</span>)))</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Flurescence intensity&quot;</span>, <span class="dv">2</span>, <span class="at">line=</span><span class="dv">4</span>, <span class="at">las=</span><span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(graph_par)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">6</span>,<span class="dv">4</span>,<span class="dv">1</span>), <span class="at">las=</span><span class="dv">1</span>, <span class="at">xpd=</span>F)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fluo_intensity<span class="sc">~</span>concentration, </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">data=</span>st,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Concenration (ng/µL)&quot;</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">&quot;&quot;</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">main=</span><span class="st">&quot;Standard curve&quot;</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">21</span>, <span class="at">col=</span><span class="st">&quot;steelblue&quot;</span>, <span class="at">bg=</span><span class="st">&quot;steelblue&quot;</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a=</span>mod<span class="sc">$</span>coefficients[<span class="dv">1</span>],<span class="at">b=</span>mod<span class="sc">$</span>coefficients[<span class="dv">2</span>],<span class="at">col=</span><span class="st">&quot;gray&quot;</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">8</span>,<span class="dv">10000</span>, <span class="fu">paste</span>(<span class="st">&quot;R2 =&quot;</span>, <span class="fu">round</span>(<span class="fu">summary</span>(mod)<span class="sc">$</span>r.squared, <span class="at">digits =</span> <span class="dv">3</span>)))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Flurescence intensity&quot;</span>, <span class="dv">2</span>, <span class="at">line=</span><span class="dv">4</span>, <span class="at">las=</span><span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -2844,22 +2888,22 @@ Figure 3: Saving raw data from the Omega software
 </section>
 <section id="sample-quantification" class="level2">
 <h2 class="anchored" data-anchor-id="sample-quantification">Sample quantification</h2>
-<p>Sample concentration in ng/µL is estimated using the sample fluoresence intensity and the intercept and slop from the standard curve. The result is then saved in a CSV file. The name of the result file can be changed below.</p>
+<p>Sample concentration in ng/µL is estimated using the sample fluoresence intensity and the intercept and slope from the standard curve. The result is then saved in a CSV file in the <code>results</code> folder.</p>
 <div class="cell" data-tbl-cap="Sample concentration estimates from the standard curve">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimation of the sample concentration from the slope and intercept of the standard curve</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span>concentration_ng_ul <span class="ot">&lt;-</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  ((res<span class="sc">$</span>fluo_intensity<span class="sc">-</span>mod<span class="sc">$</span>coefficients[<span class="dv">1</span>])<span class="sc">/</span>mod<span class="sc">$</span>coefficients[<span class="dv">2</span>])<span class="sc">*</span>res<span class="sc">$</span>dilution</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Change below with the file name you want for results</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>file_name <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="fu">format</span>(<span class="fu">Sys.time</span>(), <span class="st">&quot;%Y%m%d&quot;</span>), <span class="st">&quot;_Quantit_results.csv&quot;</span>)</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(res, <span class="at">file =</span> <span class="fu">file.path</span>(<span class="st">&quot;results&quot;</span>, file_name),</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">sep=</span><span class="st">&quot;,&quot;</span>, <span class="at">row.names =</span> F)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>kableExtra<span class="sc">::</span><span class="fu">kable</span>(res[,<span class="fu">c</span>(<span class="st">&quot;plate&quot;</span>, <span class="st">&quot;well&quot;</span>, <span class="st">&quot;concentration_ng_ul&quot;</span>)], <span class="st">&quot;html&quot;</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;500px&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimation of the sample concentration from the slope and intercept of the standard curve</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>res<span class="sc">$</span>concentration_ng_ul <span class="ot">&lt;-</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  ((res<span class="sc">$</span>fluo_intensity<span class="sc">-</span>mod<span class="sc">$</span>coefficients[<span class="dv">1</span>])<span class="sc">/</span>mod<span class="sc">$</span>coefficients[<span class="dv">2</span>])<span class="sc">*</span>res<span class="sc">$</span>dilution</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Change below with the file name you want for results</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>file_name <span class="ot">&lt;-</span> <span class="fu">paste0</span>(file_base_name, <span class="st">&quot;_Quantit_results.csv&quot;</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(res, <span class="at">file =</span> <span class="fu">file.path</span>(<span class="st">&quot;results&quot;</span>, file_name),</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">sep=</span><span class="st">&quot;,&quot;</span>, <span class="at">row.names =</span> F)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>kableExtra<span class="sc">::</span><span class="fu">kable</span>(res[,<span class="fu">c</span>(<span class="st">&quot;plate&quot;</span>, <span class="st">&quot;well&quot;</span>, <span class="st">&quot;concentration_ng_ul&quot;</span>)], <span class="st">&quot;html&quot;</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">kable_styling</span>(<span class="st">&quot;striped&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;500px&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; ">
@@ -3311,19 +3355,23 @@ Figure 3: Saving raw data from the Omega software
 </div>
 </div>
 </div>
+</section>
+<section id="plot-concentration" class="level2">
+<h2 class="anchored" data-anchor-id="plot-concentration">Plot concentration</h2>
+<p>A simple plot to visualise the sample concentration. Samples with concentration lower than 10 ng/µL will be colored in pink.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(graph_par)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sort</span>(res<span class="sc">$</span>concentration_ng_ul)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(n<span class="sc">&gt;</span><span class="dv">10</span>, <span class="st">&#39;chartreuse4&#39;</span>, <span class="st">&#39;salmon&#39;</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">barplot</span>(n, </span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">ylab=</span><span class="st">&quot;DNA cencentration (ng/µL)&quot;</span>, </span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">col=</span> c,</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">&#39;Quant-it quantifications&#39;</span>,</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">border=</span> c)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="at">fill=</span><span class="fu">c</span>(<span class="st">&#39;chartreuse4&#39;</span>, <span class="st">&#39;salmon&#39;</span>), <span class="fu">c</span>(<span class="st">&quot;&gt;10 ng/µL&quot;</span>, <span class="st">&quot;&lt;10 ng/µL&quot;</span>))</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">10</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(graph_par)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">sort</span>(res<span class="sc">$</span>concentration_ng_ul)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(n<span class="sc">&gt;</span><span class="dv">10</span>, <span class="st">&#39;chartreuse4&#39;</span>, <span class="st">&#39;salmon&#39;</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">barplot</span>(n, </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">ylab=</span><span class="st">&quot;DNA cencentration (ng/µL)&quot;</span>, </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">col=</span> c,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">main=</span><span class="st">&#39;Quant-it quantifications&#39;</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>             <span class="at">border=</span> c)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="at">fill=</span><span class="fu">c</span>(<span class="st">&#39;chartreuse4&#39;</span>, <span class="st">&#39;salmon&#39;</span>), <span class="fu">c</span>(<span class="st">&quot;&gt;10 ng/µL&quot;</span>, <span class="st">&quot;&lt;10 ng/µL&quot;</span>))</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">10</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -3339,7 +3387,7 @@ Figure 3: Saving raw data from the Omega software
 <div class="cell">
 <details class="code-fold">
 <summary>Show the code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sessioninfo<span class="sc">::</span><span class="fu">session_info</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sessioninfo<span class="sc">::</span><span class="fu">session_info</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>─ Session info ───────────────────────────────────────────────────────────────
