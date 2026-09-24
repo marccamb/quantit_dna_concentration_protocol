@@ -2,25 +2,25 @@
 
 This repository contains a Quarto document with wet lab protocol and R scripts to analyze data obtained from an Omega FLUOstar Omega (BMC Biotech) plate reader, and Quant-it dsDNA High Sensitivity kit (ThermoFisher).
 
-## Downloading the repository
+## 1. Downloading the repository
 
-- If you have access to a terminal, and git is installed on your computer, clone the repository using `git clone git@github.com:marccamb/quantit_dna_concentration_protocol.git` in a terminal
-- If you don't have a terminal or do not use git, click on the "< > Code" button, and download and exctract the ZIP repository.
+- If you have access to a terminal, and git is installed on your computer, clone the repository using `git clone git@github.com:marccamb/quantit_dna_concentration_protocol.git`
+- If you don't have a terminal or do not use git, click on the "< > Code" button, then download and exctract the ZIP repository.
 
-## Data preparation
+## 2. Data preparation
 
-Make sure that:
+- All your data files are in the `data` directory
+    - Create one folder per date of measurement, so that the plate with standards and those measured at the same time are in the same folder.
+- Each file contains in its name `plate1` with the number of the plate and no space
+- The plates containing standards contain `standard` in the the fluorescence file name in addition to the plate number.
+    - Example:
+        - `231204_standard_plate1.csv` for a plate containing both standards and samples
+        - `231204_plate2.csv` for a plate that contains only samples
 
-- All your data files are in the data directory
-- Create one folder per date of measurement, so that the plate with standards and those measured at the same time are in the same plate.
-- Each file contain in its name plate1 with the number of the plate and no space
-- The plates containing standard samples contain standard in the the fluorescence file name in addition to the plate number.
+## 3. Editing the Quarto document
 
-**Example:**
-
-- `231204_standard_plate1.csv` for a plate containing both standards and samples
-- `231204_plate2.csv` for a plate that contains only samples
+Simply open the `estimate_DNA_concentration_Quantit.qmd` file and follow the instructions. When your data is ready and the code is running, render the Quarto document (usually with ctrl+shift+K, but can depend on your IDE).
 
 ## Example
 
-The repository contains an example dataset 
+The repository contains an example dataset. You can open `estimate_DNA_concentration_Quantit.qmd` and render it to produce an HTML output with the example data. 
