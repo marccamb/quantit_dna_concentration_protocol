@@ -39,7 +39,7 @@ This document is a template for analyzing quantification data of dsDNA in 96-wel
 ## Plate preparation
 
 ::: column-page
-![](documentation/Quant-iT_quick_guide.png)
+![](images/Quant-iT_quick_guide.png)
 :::
 
 1.  Load 200 μL of the working solution into each microplate well using a black flat bottom 96-well plates.
@@ -53,15 +53,15 @@ This document is a template for analyzing quantification data of dsDNA in 96-wel
 
 - Set up the data export format as in @fig-dataformat. You can save the data export format and import it from a file later.
 
-![Data format for automatic ASCII export](documentation/data_format.png){#fig-dataformat}
+![Data format for automatic ASCII export](images/data_format.png){#fig-dataformat}
 
 - Go to the protocol manager and look for **Quant-it DNA concentration** (or create it if not existing), which should look like @fig-protocol. Check the layout tab and make sure all wells are selected for reading.
 
-![Protocol for fluorescence reading on the Omega software](documentation/protocol.PNG){#fig-protocol}
+![Protocol for fluorescence reading on the Omega software](images/protocol.PNG){#fig-protocol}
 
 - Then go to start measurement and give a name to your plate in *ID1* (@fig-reading). Do not change the gain adjustment and leave it to 800.
 
-![Saving raw data from the Omega software](documentation/protocol2.PNG){#fig-reading}
+![Saving raw data from the Omega software](images/protocol2.PNG){#fig-reading}
 
 - Start measurement. If the data export format has been correctly set up a file containing the raw data should be automatically saved in your preferred directory.
 
